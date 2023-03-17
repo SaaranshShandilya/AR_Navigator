@@ -5,16 +5,20 @@ import '../../../components/custom_surfix_icon.dart';
 import '../../../components/form_error.dart';
 //import 'package:flutter_application_1/helper/keyboard.dart';
 import '../../../screens/forgot_password/forgot_password_screen.dart';
+import 'package:frontend/models/Sign_in_res.dart';
 import '../../../screens/login_success/login_success_screen.dart';
-
+import 'package:sqflite/sqflite.dart';
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 import 'package:dio/dio.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 final dio = Dio();
 
 class SignForm extends StatefulWidget {
+  
   @override
   _SignFormState createState() => _SignFormState();
 }
@@ -26,7 +30,11 @@ class _SignFormState extends State<SignForm> {
   bool? remember = false;
   final List<String?> errors = [];
 
-  void login () async{
+  void initState(){
+    super.initState();
+  }
+
+  Future<Details> login () async{
     var params = {
       "email":email,
       "password":password
@@ -34,7 +42,8 @@ class _SignFormState extends State<SignForm> {
     Response response  = await dio.post('https://35f6-2401-4900-1c52-2b33-b5b1-9129-2afd-1b03.in.ngrok.io/api/tourist/login',
     data: jsonEncode(params)
     );
-    print(response);
+    Details det = Details.fromJson(response.data);
+    return det;
   }
 
 
@@ -52,6 +61,7 @@ class _SignFormState extends State<SignForm> {
       });
   }
 
+  late Future<Details> res;
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +80,17 @@ class _SignFormState extends State<SignForm> {
             press: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                print(email);
-                print(password);
-                login();
+                // print(email);
+                // print(password);
+                // final id = db.collection('users').doc().id;
+                final user = Hive.box("user");
+                login().then((value) => {
+                  user.put('id', value.userData!.id),
+                  user.put('token', value.userData!.token),
+                  print(user.get('id'))
+                });
+               
+                // Details? info = res;
                 Navigator.pushNamed(context, LoginSuccessScreen.routeName);
               }
             },
@@ -108,6 +126,7 @@ class _SignFormState extends State<SignForm> {
         }
         return null;
       },
+      
       decoration: InputDecoration(
         labelText: "Password",
         filled: true,

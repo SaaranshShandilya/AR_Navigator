@@ -9,11 +9,19 @@ import 'models/Museum.dart';
 import 'theme.dart';
 import 'constants.dart';
 import 'routs.dart';
+import 'package:hive/hive.dart';
 import 'screens/splash/splash_screen.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // final appDocumentDirectory = await getApplicationDocumentsDirectory();
+  // await Hive.initFlutter();
+  // Hive.init(appDocumentDirectory.path);
+  await Hive.initFlutter();
+  var box = await Hive.openBox("user");
   runApp(MyApp());
 }
 

@@ -5,6 +5,12 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import '../models/Museum.dart';
 import 'package:frontend/screens/museum_description.dart';
+import 'package:localstore/localstore.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+// import 'package:localstorage/localstorage.dart';
+final db = Localstore.instance;
 final dio = Dio();
 
 class MuseumList extends StatefulWidget {
@@ -14,7 +20,6 @@ class MuseumList extends StatefulWidget {
 }
 
 class _MuseumList extends State<MuseumList>{
-
   Future<Museum> getMuseum() async {
     Response data = await dio.get('https://35f6-2401-4900-1c52-2b33-b5b1-9129-2afd-1b03.in.ngrok.io/api/tourist/museumsFeed');
     print('User info ${data.data}');
@@ -24,10 +29,14 @@ class _MuseumList extends State<MuseumList>{
 
   late Future<Museum> mus;
 
+
+  final user = Hive.box('user');
+  
+
   @override
   void initState(){
     mus = getMuseum();
-    print(mus);
+    print('Its ${user.get('id')}');
     super.initState();
   }
 
