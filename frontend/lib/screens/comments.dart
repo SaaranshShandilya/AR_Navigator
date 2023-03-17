@@ -43,11 +43,12 @@ class _CommentsPageState extends State<CommentsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: FutureBuilder<Comm?>(
+      body: FutureBuilder<Comm>(
         future:cm,
         builder: (context,snapshot){
           if(snapshot.hasData){
             Comm? info = snapshot.data;
+            print(info);
           if(info!=null){
             List <Comments> data = info.comments??[];
             print(data);

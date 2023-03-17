@@ -20,11 +20,6 @@ class Reviews extends StatefulWidget {
 class _ReviewsPageState extends State<Reviews> {
 
   void save() async{
-
-    print('Museum id is ${widget.id}');
-    print('userId is ${uid}');
-    print('comment is ${reviews}');
-    print('rating is ${rate}');
     var params ={
       "museumID":widget.id,
       "userID":uid,
@@ -80,7 +75,7 @@ class _ReviewsPageState extends State<Reviews> {
               initialRating: 0,
               minRating: 0,
               direction: Axis.horizontal,
-              allowHalfRating: true,
+              allowHalfRating: false,
               itemCount: 5,
               itemSize: 20,
               itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
