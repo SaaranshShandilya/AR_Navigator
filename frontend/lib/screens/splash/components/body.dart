@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/screens/owner_registration.dart';
 import '../../../constants.dart';
 import '../../../screens/sign_in/sign_in_screen.dart';
 import '../../../size_config.dart';
@@ -65,11 +66,22 @@ class _BodyState extends State<Body> {
                         (index) => buildDot(index: index),
                       ),
                     ),
-                    Spacer(flex: 3),
+                    // Spacer(flex: 3),
+                    SizedBox(height:30),
                     DefaultButton(
-                      text: "Continue",
+                      text: "Continue as a Tourist",
                       press: () {
                         Navigator.pushNamed(context, SignInScreen.routeName);
+                      },
+                    ),
+                    // Spacer(flex:3),
+                    Spacer(flex:1),
+                    Text('or', style:TextStyle(color:Color(0xfffa256a))),
+                    SizedBox(height:20),
+                    DefaultButton(
+                      text: "Enlist your museum as an owner!",
+                      press: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>Owner()));
                       },
                     ),
                     Spacer(),
